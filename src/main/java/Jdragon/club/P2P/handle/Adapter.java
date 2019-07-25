@@ -92,8 +92,6 @@ public abstract class Adapter extends WXandQQListener implements Controller{
             MessageTools.sendFileMsgByUserId(id,filepath);
         }
     }
-
-
     @EventHandler
     public void friend(EventFriendRequest event){
         event.accept();
@@ -122,10 +120,10 @@ public abstract class Adapter extends WXandQQListener implements Controller{
                 .sex(usersex)
                 .age(userage)
                 .type("QQ");
-
         handleMsg(new PrivateMsg()
                 .message(message)
                 .userinfo(user_info)
+                .qqmsg(event)
         );
     }
 
@@ -146,7 +144,9 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         if (!startup_status)return null;
         handleMsg(new PrivateMsg()
                 .message(message)
-                .userinfo(getWXUserInfo(msg)));
+                .userinfo(getWXUserInfo(msg))
+                .wxmsg(msg)
+        );
         return null;
     }
 
@@ -165,7 +165,9 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         System.out.println("图片保存成功");
         WXhandleImgMsg(new PrivateMsg()
                 .userinfo(getWXUserInfo(msg))
-                .path(fileName));
+                .path(fileName)
+                .wxmsg(msg)
+        );
         return null;
     }
 
@@ -183,7 +185,9 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         System.out.println( "声音保存成功");
         WXhandleVoiceMsg(new PrivateMsg()
                 .userinfo(getWXUserInfo(msg))
-                .path(fileName));
+                .path(fileName)
+                .wxmsg(msg)
+        );
         return null;
     }
 
@@ -201,7 +205,9 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         System.out.println("视频保存成功");
         WXhandleFileMsg(new PrivateMsg()
                 .userinfo(getWXUserInfo(msg))
-                .path(viedoPath));
+                .path(viedoPath)
+                .wxmsg(msg)
+        );
         return null;
     }
 
@@ -219,7 +225,9 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         System.out.println("文件" + fileName + "保存成功");
         WXhandleFileMsg(new PrivateMsg()
                 .userinfo(getWXUserInfo(msg))
-                .path(filePath));
+                .path(filePath)
+                .wxmsg(msg)
+        );
         return null;
     }
 

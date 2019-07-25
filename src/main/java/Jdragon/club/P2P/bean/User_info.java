@@ -44,11 +44,9 @@ public class User_info {
     public void setType(String type) {
         this.type = type;
     }
-
     public long getAge() {
         return age;
     }
-
     public void setAge(long age) {
         this.age = age;
     }
