@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="itchat4j-1.1.0-jar-with-dependencies">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/itchat4j-1.1.0-jar-with-dependencies.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/itchat4j-1.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/itchat4j-1.1.0-sources.jar!/" />
+      <root url="file://$PROJECT_DIR$/src/main/java" />
+      <root url="file://$PROJECT_DIR$/src/test/java" />
+    </SOURCES>
+  </library>
+</component>
