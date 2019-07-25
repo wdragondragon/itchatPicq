@@ -9,16 +9,16 @@
 ## 监听方法
 ### 1、handleMsg
     @Override
-    public void handleMsg(String s, User_info user_info) {}
+    public void handleMsg(PrivateMsg msg) {}
 ### 2、WXhandleFileMsg
     @Override
-    public void WXhandleFileMsg(User_info user_info, String s) {}
+    public void WXhandleFileMsg(PrivateMsg msg) {}
 ### 3、WXhandleImgMsg
     @Override
-    public void WXhandleImgMsg(User_info user_info, String s) {}
+    public void WXhandleImgMsg(PrivateMsg msg) {}
 ### 4、WXhandleVoiceMsg
     @Override
-    public void WXhandleVoiceMsg(User_info user_info, String s) {}
+    public void WXhandleVoiceMsg(PrivateMsg msg) {}
     
 ## 发送方法
 ### 1、SendMsgToID
