@@ -1,5 +1,5 @@
 # itchatPicq
-简单的适配了微信机器人框架和QQ机器人框架，实现集合微信和QQ的机器人的适配器。采用的是小桂的cq框架Picqbot和itchat4j微信机器人框架。
+简单的适配了微信机器人框架和QQ机器人框架，实现集合微信和QQ的机器人的适配器。采用的是小桂的cq框架Picqbot和itchat4j微信机器人框架。暂时只能对私聊的信息进行通配转发，如果要使用群聊只能使用一起打包的底层机器人框架的监听器。
 
 [底层使用微信机器人框架itchat4j](https://github.com/wdragondragon/itchat4j)
 
