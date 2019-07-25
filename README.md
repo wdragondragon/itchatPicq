@@ -1,8 +1,9 @@
 # itchatPicq
 简单的适配了微信机器人框架和QQ机器人框架，实现集合微信和QQ的机器人的适配器。采用的是小桂的cq框架Picqbot和itchat4j微信机器人框架。
-[itchat4j](https://github.com/wdragondragon/itchat4j)
 
-[PicqBotX](https://github.com/wdragondragon/PicqBotX)
+[底层使用微信机器人框架itchat4j](https://github.com/wdragondragon/itchat4j)
+
+[底层使用QQ机器人框架PicqBotX](https://github.com/wdragondragon/PicqBotX)
 
 注：除了我封装的四个监听方法和四个发送方法，所有在底层的两个机器人框架中的方法均可重写。具体不同端机器人的方法请点到以上链接查看。
 ## 监听方法
