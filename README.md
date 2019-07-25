@@ -62,22 +62,31 @@ public class Client extends Adapter{
         User_adr.viedo = "C:\\Users\\Lenovo\\Desktop\\酷Q Pro\\data\\viedo\\";
     }
     @Override
-    public void handleMsg(String s, User_info user_info) {
-        SendMsgToID(s,user_info.getQQnumber(),user_info.getType());
+    public void handleMsg(PrivateMsg msg) {
+        String message = msg.getMessage();
+        User_info user_info = msg.getUser_info();
+        SendMsgToID(message,user_info.getQQnumber(),user_info.getType());
     }
     @Override
-    public void WXhandleFileMsg(User_info user_info, String s) {
-        SendWXFileMsgToID(User_adr.file,user_info.getQQnumber(),user_info.getType());
+    public void WXhandleFileMsg(PrivateMsg msg) {
+        String filepath = msg.getPath();
+        User_info user_info = msg.getUser_info();
+        SendWXFileMsgToID(filepath,user_info.getQQnumber(),user_info.getType());
     }
     @Override
-    public void WXhandleImgMsg(User_info user_info, String s) {
-        SendWXPicMsgToID(User_adr.file,user_info.getQQnumber(),user_info.getType());
+    public void WXhandleImgMsg(PrivateMsg msg) {
+        String filepath = msg.getPath();
+        User_info user_info = msg.getUser_info();
+        SendWXPicMsgToID(filepath,user_info.getQQnumber(),user_info.getType());
     }
     @Override
-    public void WXhandleVoiceMsg(User_info user_info, String s) {
-        SendWXVoiceToID(User_adr.file,user_info.getQQnumber(),user_info.getType());
+    public void WXhandleVoiceMsg(PrivateMsg msg) {
+        String filepath = msg.getPath();
+        User_info user_info = msg.getUser_info();
+        SendWXVoiceToID(filepath,user_info.getQQnumber(),user_info.getType());
     }
 }
+
 ```
 
 ### test
