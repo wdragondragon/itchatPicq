@@ -1,6 +1,7 @@
 package Jdragon.club.P2P.handle;
 
 import Jdragon.club.P2P.Tools.DownloadMsg;
+import Jdragon.club.P2P.bean.PrivateMsg;
 import Jdragon.club.P2P.bean.User_adr;
 import Jdragon.club.P2P.bean.User_info;
 import cc.moecraft.icq.event.EventHandler;
@@ -22,14 +23,13 @@ public abstract class Adapter extends WXandQQListener implements Controller{
     private Logger LOG = Logger.getLogger(WXandQQListener.class);
     private boolean startup_status = false;//适配器开关
     @Override
-    public abstract void handleMsg(String message, User_info user_info);
+    public abstract void handleMsg(PrivateMsg msg);
     @Override
-    public abstract void WXhandleFileMsg(User_info user_info,String filepath);
+    public abstract void WXhandleFileMsg(PrivateMsg msg);
     @Override
-    public abstract void WXhandleImgMsg(User_info user_Info,String filepath);
+    public abstract void WXhandleImgMsg(PrivateMsg msg);
     @Override
-    public abstract void WXhandleVoiceMsg(User_info user_Info,String filepath);
-
+    public abstract void WXhandleVoiceMsg(PrivateMsg msg);
     private IcqHttpApi httpAPI;
     public Adapter(IcqHttpApi httpAPI){
         super();
@@ -54,7 +54,7 @@ public abstract class Adapter extends WXandQQListener implements Controller{
             }else if(recordindex!=-1){
                 //向微信发送语音
                 String filename = message.substring(recordindex+12,message.length()-1);
-                    String voice = User_adr.voice + filename;
+                String voice = User_adr.voice + filename;
                 MessageTools.sendFileMsgByUserId(id,voice);
             } else {
                 MessageTools.sendMsgById(message,id);
@@ -92,13 +92,17 @@ public abstract class Adapter extends WXandQQListener implements Controller{
             MessageTools.sendFileMsgByUserId(id,filepath);
         }
     }
-    //继承QQ和微信的接口
-    //icq
+
+
     @EventHandler
     public void friend(EventFriendRequest event){
         event.accept();
         event.getBot().getAccountManager().refreshCache();
     }
+    /**
+     *  继承QQ信息的接口
+     * @param event
+     */
     @EventHandler
     public void Carry(EventPrivateMessage event){
         String message = event.getMessage();
@@ -118,9 +122,18 @@ public abstract class Adapter extends WXandQQListener implements Controller{
                 .sex(usersex)
                 .age(userage)
                 .type("QQ");
-        handleMsg(message,user_info);
+
+        handleMsg(new PrivateMsg()
+                .message(message)
+                .userinfo(user_info)
+        );
     }
-    //重写微信
+
+    /**
+     * 继承接受微信文本信息的接口
+     * @param msg
+     * @return
+     */
     @Override
     public String textMsgHandle(BaseMsg msg) {
         if(msg.isGroupMsg())return null;
@@ -131,9 +144,17 @@ public abstract class Adapter extends WXandQQListener implements Controller{
             startup_status = false;
         }
         if (!startup_status)return null;
-        handleMsg(message,getWXUserInfo(msg));
+        handleMsg(new PrivateMsg()
+                .message(message)
+                .userinfo(getWXUserInfo(msg)));
         return null;
     }
+
+    /**
+     * 继承重写微信图片信息的接口
+     * @param msg
+     * @return
+     */
     @Override
     public String picMsgHandle(BaseMsg msg) {
         if(msg.isGroupMsg())return null;
@@ -142,21 +163,35 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         String picPath = User_adr.image + fileName ; // 调用此方法来保存图片
         DownloadTools.getDownloadFn(msg, MsgTypeEnum.PIC.getType(), picPath); // 保存图片的路径
         System.out.println("图片保存成功");
-        WXhandleImgMsg(getWXUserInfo(msg),fileName);
+        WXhandleImgMsg(new PrivateMsg()
+                .userinfo(getWXUserInfo(msg))
+                .path(fileName));
         return null;
     }
+
+    /**
+     * 微信接受语音信息的接口
+     * @param msg
+     * @return
+     */
     @Override
     public String voiceMsgHandle(BaseMsg msg) {
         if(msg.isGroupMsg())return null;
-        String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date());
-        fileName += ".mp3";
-//        String voicePath = voice + File.separator + fileName;
+        String fileName = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()) + ".mp3";
         String voicePath = User_adr.voice  + fileName;
         DownloadTools.getDownloadFn(msg, MsgTypeEnum.VOICE.getType(), voicePath);
         System.out.println( "声音保存成功");
-        WXhandleVoiceMsg(getWXUserInfo(msg),fileName);
+        WXhandleVoiceMsg(new PrivateMsg()
+                .userinfo(getWXUserInfo(msg))
+                .path(fileName));
         return null;
     }
+
+    /**
+     * 继承重写微信接收视频的接口
+     * @param msg
+     * @return
+     */
     @Override
     public String viedoMsgHandle(BaseMsg msg) {
         if(msg.isGroupMsg())return null;
@@ -164,9 +199,17 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         String viedoPath = User_adr.viedo + fileName + ".mp4";
         DownloadTools.getDownloadFn(msg, MsgTypeEnum.VIEDO.getType(), viedoPath);
         System.out.println("视频保存成功");
-        WXhandleFileMsg(getWXUserInfo(msg),viedoPath);
+        WXhandleFileMsg(new PrivateMsg()
+                .userinfo(getWXUserInfo(msg))
+                .path(viedoPath));
         return null;
     }
+
+    /**
+     * 继承重写微信接收文件
+     * @param msg
+     * @return
+     */
     @Override
     public String mediaMsgHandle(BaseMsg msg) {
         if(msg.isGroupMsg())return null;
@@ -174,18 +217,37 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         String filePath = User_adr.file + fileName; // 这里是需要保存收到的文件路径，文件可以是任何格式如PDF，WORD，EXCEL等。
         DownloadTools.getDownloadFn(msg, MsgTypeEnum.MEDIA.getType(), filePath);
         System.out.println("文件" + fileName + "保存成功");
-        WXhandleFileMsg(getWXUserInfo(msg),filePath);
+        WXhandleFileMsg(new PrivateMsg()
+                .userinfo(getWXUserInfo(msg))
+                .path(filePath));
         return null;
     }
+
+    /**
+     * 继承重写微信接收到名片信息的接口
+     * @param msg
+     * @return
+     */
     @Override
     public String nameCardMsgHandle(BaseMsg msg) {
         return null;
     }
+
+    /**
+     * 继承重写微信接受到系统信息的接口
+     * @param msg
+     */
     @Override
     public void sysMsgHandle(BaseMsg msg) {
         String text = msg.getContent();
         LOG.info(text);
     }
+
+    /**
+     * 继承重写微信接受到添加好友信息的借口
+     * @param msg
+     * @return
+     */
     @Override
     public String verifyAddFriendMsgHandle(BaseMsg msg) {
         MessageTools.addFriend(msg, true); // 同意好友请求，false为不接受好友请求
@@ -193,6 +255,12 @@ public abstract class Adapter extends WXandQQListener implements Controller{
         String nickName = recommendInfo.getNickName();
         return "感谢添加传话筒 "+nickName;
     }
+
+    /**
+     * 封装微信userinfo
+     * @param msg
+     * @return
+     */
     private User_info getWXUserInfo(BaseMsg msg){
         String id = msg.getFromUserName();
         String name = "未知";
