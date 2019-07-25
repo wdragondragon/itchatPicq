@@ -1,32 +1,35 @@
 # itchatPicq
 简单的适配了微信机器人框架和QQ机器人框架，实现集合微信和QQ的机器人的适配器。采用的是小桂的cq框架Picqbot和itchat4j微信机器人框架。
-##监听方法
-###1、handleMsg
+[itchat4j](https://github.com/wdragondragon/itchat4j)
+[PicqBotX](https://github.com/wdragondragon/PicqBotX)
+具体不同端机器人的方法请点到以上链接查看。
+## 监听方法
+### 1、handleMsg
     @Override
     public void handleMsg(String s, User_info user_info) {}
-###2、WXhandleFileMsg
+### 2、WXhandleFileMsg
     @Override
     public void WXhandleFileMsg(User_info user_info, String s) {}
-###3、WXhandleImgMsg
+### 3、WXhandleImgMsg
     @Override
     public void WXhandleImgMsg(User_info user_info, String s) {}
-###4、WXhandleVoiceMsg
+### 4、WXhandleVoiceMsg
     @Override
     public void WXhandleVoiceMsg(User_info user_info, String s) {}
     
-##发送方法
-###1、SendMsgToID
+## 发送方法
+### 1、SendMsgToID
 (需要发送的消息，QQ号或微信号在User_info中已封装，发送者是什么类型用户User_info中已封装)
-###2、SendWXFileMsgToID
+### 2、SendWXFileMsgToID
 (file的路径创建实例时定义，QQ号或微信号在User_info中已封装，发送者是什么类型用户User_info中已封装)
-###3、WXhandleImgMsg
+### 3、WXhandleImgMsg
 (file的路径创建实例时定义，QQ号或微信号在User_info中已封装，发送者是什么类型用户User_info中已封装)
-###4、SendWXVoiceToID
+### 4、SendWXVoiceToID
 (file的路径创建实例时定义，QQ号或微信号在User_info中已封装，发送者是什么类型用户User_info中已封装)
 
-##例子
+## 例子
 
-###Client
+### Client
 ```java
 package Test;
 
@@ -74,7 +77,7 @@ public class Client extends Adapter{
 }
 ```
 
-###test
+### test
 ```java
 package Test;
 
